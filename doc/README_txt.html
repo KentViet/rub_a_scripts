@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=IBM437" http-equiv="Content-Type" />
+
+  <title>File: README.txt [RDoc Documentation]</title>
+
+  <link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet" />
+
+  <script src="./js/jquery.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="./js/thickbox-compressed.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="./js/quicksearch.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="./js/darkfish.js" type="text/javascript"
+    charset="utf-8"></script>
+</head>
+
+<body class="file">
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="./index.html">Home</a>
+          <a href="./index.html#classes">Classes</a>
+          <a href="./index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Files</h3>
+        <ul>
+        
+          <li class="file"><a href="./License_txt.html">License.txt</a></li>
+        
+          <li class="file"><a href="./README_txt.html">README.txt</a></li>
+        
+          <li class="file"><a href="./Rakefile.html">Rakefile</a></li>
+        
+          <li class="file"><a href="./bin/rub_a_scripts.html">rub_a_scripts</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class Index
+          <span class="search-toggle"><img src="./images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="./Inline.html">Inline</a></li>
+        
+          <li><a href="./Inline/VBScript.html">Inline::VBScript</a></li>
+        
+          <li><a href="./MyVBScriptClass.html">MyVBScriptClass</a></li>
+        
+          <li><a href="./TestRubAScript.html">TestRubAScript</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    
+<p>Gem: Rub_A_Scripts</p>
+
+<p>Description:</p>
+
+<p>An extension of RubyInline gem. rub_a_scripts allows you to write VBScript
+within Ruby code. The extensions are then automatically loaded into the
+class/module that defines it. Allowing ruby to call on VBScript function
+and procedure. Basic data types are mapped as such facilitate the exchange
+of data between the two languages.</p>
+
+<p>Example:</p>
+
+<p>class <a href="MyVBScriptClass.html">MyVBScriptClass</a>                  
+#==&gt; this is Ruby.</p>
+
+<pre>inline :VBScript do |builder|
+
+  builder.vbscript '
+  Function fnSum(var1,var2)           #==&gt; this is VBScript.
+    vrSum = var1 + var2
+    fnSum = vrSum
+  End Function
+  '
+
+  builder.vbscript '
+  Function fnReturn2DArray()          #==&gt; return to ruby an array [[1,3],[&quot;Hello&quot;,&quot;World&quot;],true]
+    array1 = Array(1,3)
+    array2 = Array(&quot;Hello&quot;, &quot;World&quot;)
+    fnReturn2DArray = Array(array1,array2,True)
+  End Function
+  '
+
+end</pre>
+
+<p>end</p>
+
+<p>@vb_script = MyVBScriptClass.new() puts @vb_script.fnSum(3,5)             
+#==&gt; Ruby passing 3,8 to VBScript, will return 8. puts
+@vb_script.fnReturn2DArray()       #==&gt; will return [[<a
+href="http://"Hello","World"">1,3],</a>,true].</p>
+
+<p>A very simple examples. But Essentially you can load any VBScript you want.
+Basic data types are mapped so you can send and retrieve whatever you
+need(except for object - you'll get nil for it cause I don't know how to
+map complex object). For more examples see the unit tests.</p>
+
+<p>How:</p>
+
+<p>Upon instantiation of the class. Ruby will gather all the VBScript source
+code and then create a .vbs file in the RubyInline folder. It will also add
+a VBScript method to that .vbs file that is responsible for picking up
+arguments send to the .vbs file. Then later on send the output to stdout so
+that Ruby can pick up the output and then format it as the result.</p>
+
+<pre>- For examples, in the above example a file will be created in the RubyInline folder: VBScriptXXXXXXXXX.vbs
+- Then Ruby will execute that file: cscript.exe VBScriptXXXXXXXXX.vbs fnSum(3,5) \\NOLOGO
+- There is a method inside VBScriptXXXXXXXXX.vbs named fxWriteOutput which will take fnSum(3,5) and do an Eval on it.
+- It will take the result and then put it to the stdout.
+- Since Ruby executed the system process that run VBScriptXXXXXXXXX.vbs it will collect the last line in the stdout.
+- Covert that to the appropriate type and then reassign it to the Ruby function call.</pre>
+
+<p>Warning:</p>
+
+<pre>- after you instantiate the class you might want to use .delete_file to remove the VBScript file.
+- you can use clean_cache to all VBScript file in the RubyInline folder</pre>
+
+<p>Q&amp;A:</p>
+
+<pre>1. Why name it Rub_A_Scripts?
+    - because (Ruby + VBScript). Its like a marriage, both have to give
+    up something to make it works. :)
+2. But why? VBScript is platform dependent, slower, less elegant than Ruby. Anything that can
+    be done in VBScript can easily be done in Ruby.
+    - There are a lot of existing VBScript and build scripts that we can reuse or integrated
+    into Ruby.
+    - VBScript have access to various tools/api that by giving Ruby access to VBScript we
+    can then tap into those tools/api.</pre>
+
+<p>License: The MIT License (MIT)</p>
+
+<p>Copyright (c) 2014 &lt;Kent T. Le&gt;</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.</p>
+
+  </div>
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+</body>
+</html>
+

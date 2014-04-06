@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=IBM437" http-equiv="Content-Type" />
+
+  <title>File: test.rb [RDoc Documentation]</title>
+
+  <link type="text/css" media="screen" href="../rdoc.css" rel="stylesheet" />
+
+  <script src="../js/jquery.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="../js/thickbox-compressed.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="../js/quicksearch.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="../js/darkfish.js" type="text/javascript"
+    charset="utf-8"></script>
+</head>
+
+<body class="file file-popup">
+  <div id="metadata">
+    <dl>
+      <dt class="modified-date">Last Modified</dt>
+      <dd class="modified-date">2014-04-05 00:48:28 -0400</dd>
+
+      
+      <dt class="requires">Requires</dt>
+      <dd class="requires">
+        <ul>
+        
+        </ul>
+      </dd>
+      
+
+      
+    </dl>
+  </div>
+
+  <div id="documentation">
+    
+    <div class="description">
+      <h2>Description</h2>
+      
+<p>@my_array3 = [<a href="http://0">9,</a>,[[<a href="http://2">1],[</a>,[<a
+href="http://4">3]],</a>]] @not_array = 8 @my_str = "Hello World"</p>
+
+<p>def construct_arguments(*args)</p>
+
+<pre>args.each_with_index do |item, index|
+  if item.class == Array
+    item.each_with_index do |inner_item, index|
+      if inner_item.class == Array
+        puts &quot;this is an array: #{inner_item.class}&quot;
+        construct_arguments(inner_item)
+      else
+        puts &quot;this is not an array: #{inner_item}&quot;
+      end
+    end
+  else
+    puts item
+  end
+end</pre>
+
+<p>end</p>
+
+<p>construct_arguments(@my_array3) construct_arguments(@not_array)
+construct_arguments(@my_str)</p>
+
+    </div>
+    
+  </div>
+</body>
+</html>
+
